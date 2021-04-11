@@ -67,11 +67,9 @@ fn main() {
     let (tt, rt): (Sender<Event>, Receiver<Event>) = mpsc::channel();
 
     let time_event = std::thread::spawn(move || loop {
-        if let Ok(event) = re.recv_timeout(Duration::from_millis(500)) {
-            if event {
-                break;
-            }
-        }
+        if let Ok(true) = re.recv_timeout(Duration::from_millis(500)) {
+            break;
+        };
         tt.send(Event::UpdateTime).unwrap();
     });
 
